@@ -32,7 +32,14 @@ impl Config {
         // let query=args[1].clone();
         // let file_path=args[2].clone();
 
-        let ignore_case=env::var("IGNORE_CASE").is_ok();
+        // let ignore_case=env::var("IGNORE_CASE").is_ok();
+        // let ignore_case=env::var("IGNORE_CASE").map_or(false, |var| var.eq("1"));
+        let ignore_case_flag = env::var("IGNORE_CASE").ok();
+        // let ignore_case = match ignore_case_flag.as_ref().map(String::as_ref) {
+        let ignore_case = match ignore_case_flag.as_deref() {
+            None | Some("0") | Some("false") => false,
+            Some(_) => true,
+        };
 
         Ok(Config{query,file_path,ignore_case})
     }
